@@ -1,11 +1,12 @@
-.menu{
+.menu {
     display: flex;
     align-items: center;
     margin: auto;
     position: relative;
     background: white;
 }
-.menu__counter{
+
+.menu__counter {
     font-style: oblique;
     margin: auto;
     border: none;
@@ -13,7 +14,8 @@
     align-items: center;
     vertical-align: middle;
 }
-.menu__filter{
+
+.menu__filter {
     font-style: oblique;
     border: none;
     margin: auto;
@@ -22,17 +24,20 @@
     vertical-align: middle;
 
 }
-.menu-filter__button{
+
+.menu-filter__button {
     background: transparent;
     border: none;
     margin: auto;
     cursor: pointer;
 }
+
 .active {
     outline: 1px solid #e2e1e1;
     border-radius: 3px;
 }
-.menu__status{
+
+.menu__status {
     font-style: oblique;
     margin: auto;
     border: none;

@@ -1,68 +1,68 @@
 window.onload = function () {
-    function fetchTasks(filter){
+    function fetchTasks(filter) {
         const host = "http://localhost:8000";
         $.ajax({
-            url:host+'/api/task/',
+            url: host + '/api/task/',
             method: 'GET',
             data: {},
-            success: function (tasks,status){
+            success: function (tasks, status) {
                 renderTasks(tasks, filter);
-                printCountTasks(counterField,todoItemCheckbox);
+                printCountTasks(counterField, todoItemCheckbox);
             },
-            error: function (response, status){
+            error: function (response, status) {
                 console.log(response);
                 console.log(status);
             }
-            });
+        });
     }
 
-    function filterTasks(tasks,status){
-        for(let i=0; i < tasks.length; i++) {
-            if(tasks[i].is_active == status){
-                const todoItem = new TodoItem(tasks[i].title, tasks[i].is_active, tasks[i].id);
+    function filterTasks(tasks, status) {
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].is_active == status) {
+                const todoItem = new TodoItem(tasks[i].title, tasks[i].is_active, tasks[i].id,inputField);
                 todoBody.append(todoItem.getHtmlElement());
             }
-            if(status == 'nothing'){
-                const todoItem = new TodoItem(tasks[i].title, tasks[i].is_active, tasks[i].id);
+            if (status == 'nothing') {
+                const todoItem = new TodoItem(tasks[i].title, tasks[i].is_active, tasks[i].id,inputField);
                 todoBody.append(todoItem.getHtmlElement());
             }
         }
     }
 
     function renderTasks(tasks, filter) {
-        switch(filter){
+        switch (filter) {
             case 'completed':
-                filterTasks(tasks,true);
+                filterTasks(tasks, true);
                 break;
             case 'active':
-                filterTasks(tasks,false);
+                filterTasks(tasks, false);
                 break;
             case 'all':
-                filterTasks(tasks,'nothing');
+                filterTasks(tasks, 'nothing');
                 break;
         }
     }
 
-    function countTasks(todoItemCheckboxes){
+    function countTasks(todoItemCheckboxes) {
         let activeTasksCount = 0;
         let allTasksCount = 0;
-        activeTasksCount = Object.values(todoItemCheckboxes).filter(todoItemCheckbox=>todoItemCheckbox.checked == false).length;
+        activeTasksCount = Object.values(todoItemCheckboxes).filter(todoItemCheckbox => todoItemCheckbox.checked == false).length;
         allTasksCount = todoItemCheckboxes.length;
-        return [activeTasksCount,allTasksCount]
+        return [activeTasksCount, allTasksCount]
     }
 
-    function printCountTasks(counterField,todoItemCheckbox){
+    function printCountTasks(counterField, todoItemCheckbox) {
         [activeTasks, allTasks] = countTasks(todoItemCheckbox);
-        counterField.innerText = 'Active tasks: '+ activeTasks +'/'+ allTasks;
+        counterField.innerText = 'Active tasks: ' + activeTasks + '/' + allTasks;
     }
 
-    function cleanAllTasks(){
-        while(todoBody.children.length) {
+    function cleanAllTasks() {
+        while (todoBody.children.length) {
             todoBody.removeChild(todoBody.children[0])
         }
     }
 
-    function switchActiveStatus(FilterButton){
+    function switchActiveStatus(FilterButton) {
         allFilterButton.classList.remove("active");
         activeFilterButton.classList.remove("active");
         completedFilterButton.classList.remove("active");
@@ -84,32 +84,32 @@ window.onload = function () {
     fetchTasks('all');
     statusField.innerText = status;
 
-    addButton.onclick = ()=>{
-        if (inputField.value != ''){
-            const todo = new TodoItem(inputField.value,true)
+    addButton.onclick = () => {
+        if (inputField.value != '') {
+            const todo = new TodoItem(inputField.value, true, undefined, inputField)
             todo.createTodoItem(todoBody);
             // todoBody.append(todo.getHtmlElement());
-            printCountTasks(counterField,todoItemCheckbox);
+            printCountTasks(counterField, todoItemCheckbox);
         }
     }
 
     todoBody.onchange = () => {
-        printCountTasks(counterField,todoItemCheckbox);
+        printCountTasks(counterField, todoItemCheckbox);
     }
 
-    allFilterButton.onclick = ()=>{
+    allFilterButton.onclick = () => {
         switchActiveStatus(allFilterButton);
         fetchTasks('all');
-        printCountTasks(counterField,todoItemCheckbox);
+        printCountTasks(counterField, todoItemCheckbox);
     }
-    activeFilterButton.onclick = ()=>{
+    activeFilterButton.onclick = () => {
         switchActiveStatus(activeFilterButton);
         fetchTasks('active');
-        printCountTasks(counterField,todoItemCheckbox);
+        printCountTasks(counterField, todoItemCheckbox);
     }
-    completedFilterButton.onclick = ()=>{
+    completedFilterButton.onclick = () => {
         switchActiveStatus(completedFilterButton);
         fetchTasks('completed');
-        printCountTasks(counterField,todoItemCheckbox);
+        printCountTasks(counterField, todoItemCheckbox);
     }
 }
